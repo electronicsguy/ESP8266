@@ -4,6 +4,7 @@
 
    Version 1.0  5/3/2014  Version 1.0   Mike Barela for Adafruit Industries
    Version 1.1  12/31/2015 Added function prototypes   Sujay Phadke
+   Version 1.2  12/31/2015 Added check for sensor presence Sujay Phadke
 */
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
@@ -13,7 +14,7 @@
 #define DHTPIN  2
 
 // function prototypes needed since Arduino > 1.6.5
-void gettemperature();
+bool gettemperature();
 
 const char* ssid     = "YourRouterID";
 const char* password = "YourRouterPassword";
@@ -66,14 +67,22 @@ void setup(void)
   server.on("/", handle_root);
   
   server.on("/temp", [](){  // if you add this subdirectory to your webserver call, you get text below :)
-    gettemperature();       // read sensor
-    webString="Temperature: "+String((int)temp_f)+" F";   // Arduino has a hard time with float to string
+    if (gettemperature()){       // read sensor
+      webString="Temperature: "+String((int)temp_f)+" F";   // Arduino has a hard time with float to string
+    }
+    else{
+      webString="Cannot get temperature";
+    }
     server.send(200, "text/plain", webString);            // send to someones browser when asked
   });
 
   server.on("/humidity", [](){  // if you add this subdirectory to your webserver call, you get text below :)
-    gettemperature();           // read sensor
-    webString="Humidity: "+String((int)humidity)+"%";
+    if (gettemperature()){           // read sensor
+      webString="Humidity: "+String((int)humidity)+"%";
+    }
+    else{
+      webString="Cannot get humidity";
+    }
     server.send(200, "text/plain", webString);               // send to someones browser when asked
   });
   
@@ -86,7 +95,7 @@ void loop(void)
   server.handleClient();
 } 
 
-void gettemperature() {
+bool gettemperature() {
   // Wait at least 2 seconds seconds between measurements.
   // if the difference between the current time and last time you read
   // the sensor is bigger than the interval you set, read the sensor
@@ -104,7 +113,9 @@ void gettemperature() {
     // Check if any reads failed and exit early (to try again).
     if (isnan(humidity) || isnan(temp_f)) {
       Serial.println("Failed to read from DHT sensor!");
-      return;
+      return false;
     }
   }
+
+  return true;
 }
