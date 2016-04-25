@@ -53,3 +53,5 @@ Notice the field called **Location** in the response header. Even though we hit 
   
   Comments and suggestions welcome.
   
+----------
+Dependencies: [*TextFinder*](http://playground.arduino.cc/Code/TextFinder)
