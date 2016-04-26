@@ -12,12 +12,12 @@
 #include "HTTPSRedirect.h"
 
 // Replace with your network credentials
-const char* ssid = "<your SSID>";
+const char* ssid = "<SSID>";
 const char* password = "<password>";
 
 const char* host = "script.google.com";
 const char* googleRedirHost = "script.googleusercontent.com";
-const char *GSpreadId = "AKfycbzYw5G-oxvnwHpAJfDsS0PWNrO0KTBMiCW78lHUcEO6ZnFHvSw";
+const char *GScriptId = "AKfycbzYw5G-oxvnwHpAJfDsS0PWNrO0KTBMiCW78lHUcEO6ZnFHvSw";
 
 const int httpsPort = 443;
 
@@ -25,9 +25,16 @@ const int httpsPort = 443;
 // echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
 // www.grc.com doesn't seem to get the right fingerprint
 // SHA1 fingerprint of the certificate
-
+//const char* fingerprint = "94 2F 19 F7 A8 B4 5B 09 90 34 36 B2 2A C4 7F 17 06 AC 6A 2E";
 const char* fingerprint = "F0 5C 74 77 3F 6B 25 D7 3B 66 4D 43 2F 7E BC 5B E9 28 86 AD";
 const char* fingerprint2 = "94 64 D8 75 DE 5D 3A E6 3B A7 B6 15 52 72 CC 51 7A BA 2B BE";
+
+// Write to Google Spreadsheet
+String url = String("/macros/s/") + GScriptId + "/exec?value=Hello";
+// Fetch Google Calendar events for 1 week ahead
+String url2 = String("/macros/s/") + GScriptId + "/exec?cal";
+// Read from Google Spreadsheet
+String url3 = String("/macros/s/") + GScriptId + "/exec?read";
 
 void setup() {
   Serial.begin(9600);
@@ -48,8 +55,7 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  // Use WiFiClientSecure class to create TLS connection
-  //WiFiClientSecure client;
+  // Use HTTPSRedirect class to create TLS connection
   HTTPSRedirect client(httpsPort);
   Serial.print("Connecting to ");
   Serial.println(host);
@@ -84,11 +90,6 @@ void setup() {
   // will reset the chip. Hence don't put too many requests in setup()
   // ref: https://github.com/esp8266/Arduino/issues/34
   
-  // Write to Google Spreadsheet
-  String url = String("/macros/s/") + GSpreadId + "/exec?value=1234";
-  // Fetch Google Calendar events for 1 week ahead
-  String url2 = String("/macros/s/") + GSpreadId + "/exec?cal";
-  
   //Serial.print("Requesting URL: ");
   //Serial.println(url);
 
@@ -104,11 +105,10 @@ void loop() {
   HTTPSRedirect client(httpsPort);
   if (!client.connected())
     client.connect(host, httpsPort);
-  
-  // Read from Google Spreadsheet
-  String url3 = String("/macros/s/") + GSpreadId + "/exec?read";
+
   client.printRedir(url3, host, googleRedirHost);
-  delay(1000);
+
+  // In my testing on a ESP-01, a delay of less than 1500 resulted 
+  // in a crash and reboot after about 50 loop runs.
+  delay(1500);
 }
-
-
