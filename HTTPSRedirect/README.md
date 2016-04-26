@@ -1,4 +1,4 @@
-# HTTP Redirect for ESP8266
+# HTTPS Redirect for ESP8266
 
 This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov [Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h). 
 *HTTPSRedirect* implements following the re-direction URL passed back to a *GET* request by the server, by making another suitable *GET*
