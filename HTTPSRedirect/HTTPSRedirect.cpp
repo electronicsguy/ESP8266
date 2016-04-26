@@ -52,7 +52,6 @@ bool HTTPSRedirect::printRedir(const char* url, const char* host, const char* re
   // make request
   print(Request);
 
-  TextFinder finder(*this);
   String line;
   String redirUrl;
   
@@ -68,8 +67,8 @@ bool HTTPSRedirect::printRedir(const char* url, const char* host, const char* re
       break;
     }
     
-    if (finder.find("Location: ") ){
-      finder.find((char *)redirHost);
+    if (find("Location: ") ){
+      find((char *)redirHost);
       DPRINTLN("Found re-direction URL!");
       redirUrl = readStringUntil('\n');
       redirFlag = true;
