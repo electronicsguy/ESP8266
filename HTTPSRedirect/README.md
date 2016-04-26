@@ -46,9 +46,11 @@ Notice the field called **Location** in the response header. Even though we hit 
   
   Please check the **GoogleDocs** Arduino example on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. The spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
   
-  The Arduino example does 3 things:
+  ## The Arduino example does 3 things:
   1. Makes a request to the script attached to the Google Spreadsheet, and write a value in the cell 'A1'.
+  
   2. Fetches entries for the next 1 week from my Google calendar's test calendar.
+  
   3. Keep repeating a request to read from the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell, you can *chat* with the ESP8266 :smile:
   
   Comments and suggestions welcome.
