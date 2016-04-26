@@ -5,7 +5,6 @@
  */
 
 #include <WiFiClientSecure.h>
-#include "TextFinder/TextFinder.h"
 
 class HTTPSRedirect : public WiFiClientSecure {
   private:
