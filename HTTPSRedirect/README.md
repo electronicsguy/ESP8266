@@ -1,8 +1,7 @@
 # HTTPS Redirect for ESP8266
 
-This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov [Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h). 
-*HTTPSRedirect* implements following the re-direction URL passed back to a *GET* request by the server, by making another suitable *GET*
- request automatically. In many cases, it is this re-directed URL which would present the final data that was required. 
+This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
+*HTTPSRedirect* uses the header information in the server's reply to a *GET* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
  This is, for example, used by a number of Google services.
 
 ## Example, with reference specially to Google services
@@ -44,7 +43,7 @@ Notice the field called **Location** in the response header. Even though we hit 
   
   The main class is **HTTPSRedirect**, which has a method called **printRedir**, which does most of the stuff.
   
-  Please check the **GoogleDocs** Arduino example on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. The spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
+  Please check the **GoogleDocs** Arduino example included above, on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. The spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
   
   The Arduino example does 3 things:
   1. Makes a request to the script attached to the Google Spreadsheet, and write a value in the cell 'A1'.
