@@ -4,7 +4,7 @@ This library extends the *WiFiClientSecure* library, which is an amazing piece o
 *HTTPSRedirect* uses the header information in the server's reply to a *GET* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
  This is, for example, used by a number of Google services.
 
-## Working Example, (specifically using Google Docs)
+## Working Example (Using Google Docs)
 With Google Apps Script, you can publish your Google Scripts on the web. These scripts can access a variety of Google services, 
 like Gmail, Google Docs, Calendar, Drive, etc. Google requires all access to their services use SSL/TLS. Hence the regular *WiFiClient* is not suitable and *WiFiClientSecure* must be used. Thanks to Ivan's work, we can now access Google services, using TLS 1.0/1.1 and 
 with large certificates. However, *WiFiClientSecure* does not follow redirects.
