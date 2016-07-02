@@ -1,3 +1,10 @@
+// Created by Sujay S. Phadke, 2016
+// All Rights Reserved.
+// Github: https://github.com/electronicsguy
+//
+// Read/Write to Google Sheets using a HTTPS GET/POST API.
+// Can be used to with ESP8266 embedded IoT device.
+// 
 // doPost needs the spreadsheet ID, it has no concept of "active spreadsheet".
 
 var ss = SpreadsheetApp.openById('1j5UX_r9JBG_qLsKYpLnlgqdZgXSkF1VC8L_mt7iAhgI');
@@ -13,6 +20,7 @@ function doPost(e) {
 }
 
 function doGet(e){
+  
   var val = e.parameter.value;
   var cal = e.parameter.cal;
   var read = e.parameter.read;
@@ -22,6 +30,10 @@ function doGet(e){
   }
   
   if (read !== undefined){
+    var now = Utilities.formatDate(new Date(), "EST", "yyyy-MM-dd'T'hh:mm a'Z'").slice(11,19);
+    sheet.getRange('D1').setValue(now);
+    var count = (sheet.getRange('C1').getValue()) + 1;
+    sheet.getRange('C1').setValue(count);
     return ContentService.createTextOutput(sheet.getRange('A1').getValue());
   }
   
@@ -30,6 +42,9 @@ function doGet(e){
     
   var range = sheet.getRange('A1');
   var retval = range.setValue(val).getValue();
+  var now = Utilities.formatDate(new Date(), "EST", "yyyy-MM-dd'T'hh:mm a'Z'").slice(11,19);
+  sheet.getRange('B1').setValue(now);
+  sheet.getRange('C1').setValue('0');
   
   if (retval == e.parameter.value)
     return ContentService.createTextOutput("Successfully wrote: " + e.parameter.value + "\ninto spreadsheet.");
