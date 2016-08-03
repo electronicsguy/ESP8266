@@ -45,12 +45,14 @@ Notice the field called **Location** in the response header. Even though we hit 
   
   Please check the **GoogleDocs** Arduino example included above, on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. The spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
   
+  In order to view the return values from Google Docs, you need to open up a serial port terminal program (like CoolTerm) and connect to ESP8266 from there. An easier option is to use the in-built "Serial Monitor" within Arduino itself. The advantage of this (over say coolterm) is that it automatically disconnects when you recompile and re-flash, and then automatically reconnects to ESP8266. This saves a lot of effort in manually disconnecting and freeing up the serial port everytime we want to re-flash.
+  
   The Arduino example does 3 things:
   1. Makes a request to the script attached to the Google Spreadsheet, and write a value in the cell 'A1'.
   
   2. Fetches entries for the next 1 week from my Google calendar's test calendar.
   
-  3. Keep repeating a request to read from the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell, you can *chat* with the ESP8266 :smile:
+  3. Make repeated requests to read the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell, you can *chat* with the ESP8266 :smile:
   
   Comments and suggestions welcome.
   
