@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Author: Sujay Phadke
+ Github: @electronicsguy
+ Copyright (C) 2016 Sujay Phadke <electronicsguy123@gmail.com>
+
+ Refs: 
+ =====
+ 1. https://ubuntuforums.org/showthread.php?t=736843
+ 2. https://github.com/Xodarap/Mips-Assembly-Syntax-Highlighting/blob/master/mal.lang
+ 3. http://denemo.org/~jjbenham/mxe/usr/i686-pc-mingw32/share/gtk-doc/html/gtksourceview-2.0/lang-tutorial.html
+
+ GtkSourceView is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+
+ GtkSourceView is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+-->
+<language id="stacktrace" _name="ESP8266 Stack Trace" version="2.0" _section="Markup">
+  <metadata>
+    <property name="mimetypes">text/plain</property>
+    <property name="globs">*.stack</property>
+  </metadata>
+
+  <styles>
+    <style id="hex_address" _name="hex address"  map-to="def:identifier" />
+    <style id="function_name" _name="function name"  map-to="def:comment" />
+    <style id="file_name" _name="file name"  map-to="def:string" />
+    <style id="file_name2" _name="file name 2"  map-to="def:preprocessor" />
+    <style id="line_number" _name="line number"  map-to="def:type" />
+    <style id="keywords" _name="keywords"  map-to="def:keyword" />
+  </styles>
+
+  <default-regex-options case-sensitive="false"/>
+
+  <definitions>
+    <context id="stacktrace">
+      <include>
+
+<!--	<context id="keywords" style-ref="keywords">
+	  <keyword>line</keyword>
+	  <keyword>at</keyword>
+        </context>
+-->
+    	<context id="full_line">
+        	<match>(^0x[0-9a-zA-Z]+): (.+) (at) (.*) (line) (.+)</match>
+		<include>
+			<context id="hex_address" sub-pattern="1" style-ref="hex_address" />
+ 			<context id="function_name" sub-pattern="2" style-ref="function_name" />
+			<context id="keywords" sub-pattern="3" style-ref="keywords" />
+			<context id="file_name" sub-pattern="4" style-ref="file_name" />
+			<context id="keywords" sub-pattern="5" style-ref="keywords" />
+			<context id="line_number" sub-pattern="6" style-ref="line_number" />
+		</include>
+    	</context>
+
+	<context id="inlined_line">
+        	<match>^:  \(inlined by\) (.+) (at) (.+) (line) (.+)</match>
+		<include>
+			<!-- <context id="hex_address" sub-pattern="1" style-ref="hex_address" /> -->
+ 			<context id="function_name" sub-pattern="1" style-ref="function_name" />
+			<context id="keywords" sub-pattern="2" style-ref="keywords" />
+			<context id="file_name2" sub-pattern="3" style-ref="file_name2" />
+			<context id="keywords" sub-pattern="4" style-ref="keywords" />
+			<context id="line_number" sub-pattern="5" style-ref="line_number" />
+		</include>
+    	</context>
+      </include>
+
+
+    </context>
+
+  </definitions>
+
+</language>
