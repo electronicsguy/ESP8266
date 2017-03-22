@@ -7,11 +7,17 @@ This is, for example, used by a number of Google services.
 Version 2 of *HTTPSRedirect* has been completely rewritten for increased functionality, seamless library calls and maximizing performance.
 
 ## Major features in Version 2
+[enhancements]
 * Implements *GET* and *PUSH* requests according to HTTP/1.1 specificaton
-* Handles raw and chunked encoding in response body
+* Handles raw and chunked encoding in the response body
+* Generic enough to follow as many number of redirections as required
+* Generic enough to connect to any server, not just Google Docs
+* Various performance improvements
+[bug fixes]
 * Correctly parses HTTP status codes and calculates chunk sizes (bug from V1)
 
-
+## *HTTPSRedirect* Library API
+![redirection logic](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.jpg)
 
 ## Working Example (Using Google Docs)
 With Google Apps Script, you can publish your Google Scripts on the web. These scripts can access a variety of Google services, 
