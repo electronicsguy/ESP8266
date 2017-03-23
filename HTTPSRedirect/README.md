@@ -1,4 +1,4 @@
-# HTTPS Redirect for ESP8266 Version 2
+# HTTPS Redirect for ESP8266 (Version 2.0)
 
 This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
 *HTTPSRedirect* uses the header information in the server's reply to a HTTP *GET* or *POST* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
@@ -8,6 +8,7 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 
 ## Major features in Version 2
 [enhancements]
+* Implements a detailed HTTP Client
 * Implements *GET* and *PUSH* requests according to HTTP/1.1 specificaton
 * Handles raw and chunked encoding in the response body
 * Generic enough to follow as many number of redirections as required
@@ -18,6 +19,37 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 
 ## *HTTPSRedirect* Library API
 ![redirection logic](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.jpg)
+
+*HTTPSRedirect* is generic enough to use it as a standard HTTP/SSL client, even when the server has no redirection. Redirection logic is explained in the figure above. In case of a server using redirection (ie: 'Location' field in the first response header), the library will automatically follow the target URL(s) till it hits the final endpoint for the final response.
+
+*HTTPSRedirect* Initialization:
+
+*HTTPSRedirect* methods:
+A *GET* request can be made by calling the following methods:
+
+```C++
+bool GET(const String& url, const char* host);
+bool GET(const String& url, const char* host, const bool& disp);
+```
+
+Arguments:
+*host* specifies the target server hostname and *url* specifies the specific URL for that host. 
+(Optional) *disp* (boolean) temporarily overrides the value set by ```printResponseBody()```.
+
+The return value specifies if the request was made successfully or no. If an error occured, the final HTTP Status code and Reason phrase can be obtained via the methods:
+```C++
+int getStatusCode(void);
+String getReasonPhrase(void);
+```
+
+If the request was successful, the endpoint response can be obtained as a string using the method:
+```C++
+String getResponseBody(void);
+```
+
+## Optimize Speed
+
+## Extra functions
 
 ## Working Example (Using Google Docs)
 With Google Apps Script, you can publish your Google Scripts on the web. These scripts can access a variety of Google services, 
