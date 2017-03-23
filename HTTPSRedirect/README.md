@@ -24,6 +24,10 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 
 *HTTPSRedirect* Initialization:
 
+Constructor:
+```C++
+HTTPSRedirect(const int& p)
+```
 *HTTPSRedirect* methods:
 A *GET* request can be made by calling the following methods:
 
