@@ -23,8 +23,9 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 *HTTPSRedirect* is generic enough to use it as a standard HTTP/SSL client, even when the server has no redirection. Redirection logic is explained in the figure above. In case of a server using redirection (ie: 'Location' field in the first response header), the library will automatically follow the target URL(s) till it hits the final endpoint for the final response.
 
 ### *HTTPSRedirect* Initialization:
-Initialize a new *HTTPSRedirect* variable or object using the Constructor:
+Initialize a new *HTTPSRedirect* variable or object using either of these constructors:
 ```C++
+HTTPSRedirect(void);
 HTTPSRedirect(const int& p)
 ```
 where *p* denotes the HTTPS port to be used (default is 443).
@@ -67,6 +68,7 @@ String getResponseBody(void);
 ```
 
 ## Optimize Speed
+Most String arguments are passed by reference to avoid inefficient calls to the copy constructor.
 
 ## Extra functions
 
