@@ -54,7 +54,7 @@ bool POST(const String& url, const char* host, const String& payload, const bool
 Arguments:
 *host* specifies the target server hostname and *url* specifies the specific URL for that host. *payload* is a string containing the body of the POST request.
 
-(Optional) *disp* (boolean) temporarily overrides the value set by ```printResponseBody()```.
+(Optional) *disp* (boolean) temporarily overrides the value set by `printResponseBody()`.
 
 In both cases, the return value specifies if the request was made successfully or no. If an error occured, the final HTTP Status code and Reason phrase can be obtained via the methods:
 ```C++
@@ -72,7 +72,7 @@ Most of the string arguments are passed by reference (or char *) to avoid ineffi
 ```C++
 bool HTTPSRedirect::reConnectFinalEndpoint(void);
 ```
-*reConnectFinalEndpoint*, as the name implies, will directly reconnect to the last endpoint stored from previous requests. It'll return the response as per the data provided by the server. Hence, all the steps to compute the endpoint are avoided, speeding up the response rate. You can disable this by commenting out the ```#define OPTIMIZE_SPEED``` declaration within HTTPSRedirect.h.
+*reConnectFinalEndpoint*, as the name implies, will directly reconnect to the last endpoint stored from previous requests. It'll return the response as per the data provided by the server. Hence, all the steps to compute the endpoint are avoided, speeding up the response rate. You can disable this by commenting out the `#define OPTIMIZE_SPEED` declaration within HTTPSRedirect.h.
 
 ## Extra functions
 These methods are not included by default to minimize the memory footprint:
@@ -80,11 +80,21 @@ These methods are not included by default to minimize the memory footprint:
 void fetchBodyRaw(void);
 void printHeaderFields(void);
 ```
-To enable them, uncomment this declaration within HTTPSRedirect.h ```#define EXTRA_FNS```.
-Note: ```fetchBodyRaw()``` is still unimplemented. ```printHeaderFields()``` works in debugging mode (described below) to print some of the relevant header fields.
+To enable them, uncomment this declaration within HTTPSRedirect.h `#define EXTRA_FNS`.
+Note: `fetchBodyRaw()` is still unimplemented. `printHeaderFields()` works in debugging mode (described below) to print some of the relevant header fields.
 
 ## Debugging
-*HTTPSRedirect* supports a debugging mode for developers. This prints out extra debugging information to the Serial output when enabled. To enable, uncomment this line within DebugMacros.h: ```#define DEBUG```.
+*HTTPSRedirect* supports a debugging mode for developers. This prints out extra debugging information to the Serial output when enabled. To enable, uncomment this line within DebugMacros.h: `#define DEBUG`.
+
+## SSL Certificates
+WiFiClientSecure supports TLS v1.2 and X.509 certificate fingerprint verification for remote servers. In most cases, you could get the remote server fingerprint using online services like [grc](https://www.grc.com/fingerprints.htm). However, in case of Google Docs, this will not work. Google serves client requests from different servers based on geographical location and time of day. Hence, any fingerprint obtained from say GRC, will be from GRC's client location. You won't get the right fingerprint since it needs to be fetched locally from your location, at this point in time. To get around this problem, you need to run *openssl* locally (on your computer) in Linux, to get the remote server's fingerprint. The command is as follows: (ref: [openssl s_client](http://askubuntu.com/questions/156620/how-to-verify-the-ssl-fingerprint-by-command-line-wget-curl/))
+```bash
+echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
+```
+Command syntax explanation here: [grep-pipe-ampersand](http://askubuntu.com/questions/24953/using-grep-with-pipe-and-ampersand-to-filter-errors-from-find) (If running this command on Mac OS, remove replace the "|&" with just the pipe "|".)
+
+This will fetch a fingerprint string. Put this string in the example main file *GoogleDocs.ino" (`const char* fingerprint`).
+You can call the method *verify()* as shown in the example to perform fingerprint verification. However, this is not mandatory. HTTPSRedirect will function correctly even in case of a certificate mismatch (Unless there is some real MiTM attack going on). Also remember that in case of Google's servers, this fingerprint will only be valid from your physical location for a few hours/days. In case you want to use fingerprint verification with Google Docs, you will have to keep generating a new fingerprint every few hours/days.
 
 ---
 
@@ -101,7 +111,7 @@ GET https://script.google.com/macros/s/<script-id>/exec
 
 However, any data returned by *doGet()* is not passed on in the body of the response. This is what the initial response header
 looks like:
-```
+```http
 Access-Control-Allow-Origin: *
 Alt-Svc: quic=":443"; ma=2592000; v="32,31,30,29,28,27,26,25"
 Alternate-Protocol: 443:quic
@@ -118,7 +128,7 @@ Transfer-Encoding: chunked
 The HTTP error code will be **302 Moved Temporarily**.
 
 Notice the field called **Location** in the response header. Even though we hit the script URL correctly (and passed on any parameters through the **GET** request), we will now need to follow this second link in order to get the return data. The second **GET** request has to be made to the domain: **https://script.googleusercontent.com/**. This URL is of the form:
-```
+```http
 https://script.googleusercontent.com 
 /macros/echo?
 lib=<encrypted-library-key>
@@ -130,14 +140,17 @@ The value of *lib* will be the same for a given published script. *user_content_
   
 Please check the **GoogleDocs** Arduino example included above, on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. The spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
   
-  In order to view the return values from Google Docs, you need to open up a serial port terminal program (like CoolTerm) and connect to ESP8266 from there. An easier option is to use the in-built "Serial Monitor" within Arduino itself. The advantage of this (over say coolterm) is that it automatically disconnects when you recompile and re-flash, and then automatically reconnects to ESP8266. This saves a lot of effort in manually disconnecting and freeing up the serial port everytime we want to re-flash.
+In order to view the return values from Google Docs, you need to open up a serial port terminal program (like CoolTerm) and connect to your IoT device (like ESP8266) from there. An easier option is to use the in-built "Serial Monitor" within Arduino itself. The advantage of this (over say Coolterm) is that it automatically disconnects when you recompile and re-flash, and then automatically reconnects to ESP8266. This saves a lot of effort in manually disconnecting and freeing up the serial port everytime we want to re-flash.
   
-  The Arduino example does 3 things:
+The Arduino example does 3 things:
   1. Makes a request to the script attached to the Google Spreadsheet, and write a value in the cell 'A1'.
   
   2. Fetches entries for the next 1 week from my Google calendar's test calendar.
   
   3. Make repeated requests to read the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell, you can *chat* with the ESP8266 :smile:
-  
-  Comments and suggestions welcome.
+ 
+This is how the Serial output looks like: 
+![serial-output](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/output2.jpg)
+
+I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
   
