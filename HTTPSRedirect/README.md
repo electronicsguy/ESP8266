@@ -26,7 +26,7 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 Initialize a new *HTTPSRedirect* variable or object using either of these constructors:
 ```C++
 HTTPSRedirect(void);
-HTTPSRedirect(const int& p)
+HTTPSRedirect(const int& p);
 ```
 where *p* denotes the HTTPS port to be used (default is 443).
 
@@ -68,9 +68,14 @@ String getResponseBody(void);
 ```
 
 ## Optimize Speed
-Most String arguments are passed by reference to avoid inefficient calls to the copy constructor.
+Most of the string arguments are passed by reference (or char *) to avoid inefficient calls to the copy constructor. In case of redirection, it is possible that a repeated operation needs to be made, which results in the same request being made to the endpoint everytime. In such cases, a special method is provided to speed up the process:
+```C++
+bool HTTPSRedirect::reConnectFinalEndpoint(void);
+````
+*reConnectFinalEndpoint*, as the name implies, will directly reconnect to the last endpoint stored from previous requests. It'll return the response as per the data provided by the server. Hence, all the steps to compute the endpoint are avoided, speeding up the response rate. You can disable this by commenting out the ```#define OPTIMIZE_SPEED``` declaration within HTTPSRedirect.h.
 
 ## Extra functions
+
 
 ## Working Example (Using Google Docs)
 With Google Apps Script, you can publish your Google Scripts on the web. These scripts can access a variety of Google services, 
