@@ -71,10 +71,20 @@ String getResponseBody(void);
 Most of the string arguments are passed by reference (or char *) to avoid inefficient calls to the copy constructor. In case of redirection, it is possible that a repeated operation needs to be made, which results in the same request being made to the endpoint everytime. In such cases, a special method is provided to speed up the process:
 ```C++
 bool HTTPSRedirect::reConnectFinalEndpoint(void);
-````
+```
 *reConnectFinalEndpoint*, as the name implies, will directly reconnect to the last endpoint stored from previous requests. It'll return the response as per the data provided by the server. Hence, all the steps to compute the endpoint are avoided, speeding up the response rate. You can disable this by commenting out the ```#define OPTIMIZE_SPEED``` declaration within HTTPSRedirect.h.
 
 ## Extra functions
+These methods are not included by default to minimize the memory footprint:
+```C++
+void fetchBodyRaw(void);
+void printHeaderFields(void);
+```
+To enable them, uncomment this declaration within HTTPSRedirect.h ```#define EXTRA_FNS```.
+Note: ```fetchBodyRaw()``` is still unimplemented. ```printHeaderFields()``` works in debugging mode (described below) to print some of the relevant header fields.
+
+## Debugging
+*HTTPSRedirect* supports a debugging mode for developers. This prints out extra debugging information to the Serial output when enabled. To enable, uncomment this line within DebugMacros.h: ```#define DEBUG```.
 
 
 ## Working Example (Using Google Docs)
