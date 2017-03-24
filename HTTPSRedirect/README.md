@@ -1,5 +1,5 @@
 # HTTPS Redirect for ESP8266 (Version 2.0)
-
+---
 This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
 *HTTPSRedirect* uses the header information in the server's reply to a HTTP *GET* or *POST* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
 This is, for example, used by a number of Google services.
@@ -9,7 +9,7 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 ## Major features in Version 2
 [enhancements]
 * Implements a detailed HTTP Client
-* Implements *GET* and *PUSH* requests according to HTTP/1.1 specificaton
+* Implements *GET* and *POST* requests according to HTTP/1.1 specificaton
 * Handles raw and chunked encoding in the response body
 * Generic enough to follow as many number of redirections as required
 * Generic enough to connect to any server, not just Google Docs
@@ -22,25 +22,40 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 
 *HTTPSRedirect* is generic enough to use it as a standard HTTP/SSL client, even when the server has no redirection. Redirection logic is explained in the figure above. In case of a server using redirection (ie: 'Location' field in the first response header), the library will automatically follow the target URL(s) till it hits the final endpoint for the final response.
 
-*HTTPSRedirect* Initialization:
-
-Constructor:
+### *HTTPSRedirect* Initialization:
+Initialize a new *HTTPSRedirect* variable or object using the Constructor:
 ```C++
 HTTPSRedirect(const int& p)
 ```
-*HTTPSRedirect* methods:
+where *p* denotes the HTTPS port to be used (default is 443).
+
+After initialization, use the method 
+```C++
+void printResponseBody(bool);
+```
+to decide if you want the endpoint response body to be printed or not on the Serial output. If not printed to Serial output, it can be read using the method described below.
+
+### *HTTPSRedirect* methods:
 A *GET* request can be made by calling the following methods:
 
 ```C++
 bool GET(const String& url, const char* host);
 bool GET(const String& url, const char* host, const bool& disp);
 ```
-
 Arguments:
-*host* specifies the target server hostname and *url* specifies the specific URL for that host. 
+*host* specifies the target server hostname and *url* specifies the specific URL for that host.
+
+A *POST* request can be made by calling the following methods:
+```C++
+bool POST(const String& url, const char* host, const String& payload);
+bool POST(const String& url, const char* host, const String& payload, const bool& disp);
+```
+Arguments:
+*host* specifies the target server hostname and *url* specifies the specific URL for that host. *payload* is a string containing the body of the POST request.
+
 (Optional) *disp* (boolean) temporarily overrides the value set by ```printResponseBody()```.
 
-The return value specifies if the request was made successfully or no. If an error occured, the final HTTP Status code and Reason phrase can be obtained via the methods:
+In both cases, the return value specifies if the request was made successfully or no. If an error occured, the final HTTP Status code and Reason phrase can be obtained via the methods:
 ```C++
 int getStatusCode(void);
 String getReasonPhrase(void);
