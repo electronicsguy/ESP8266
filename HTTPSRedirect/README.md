@@ -152,5 +152,33 @@ The Arduino example does 3 things:
 This is how the Serial output looks like: 
 ![serial-output](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/output2.jpg)
 
+---
+
+# Steps to get it working
+You need to be familiar with using Arduino IDE in general and how to use the IDE to create a project and flash the ESP8266. Refer this to link for guidance: [programming-esp8266-arduino](https://create.arduino.cc/projecthub/Metavix/programming-the-esp8266-with-the-arduino-ide-601c16)
+
+I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the other higher flash memeory versions as well (like ESP12).
+
+## Client side
+1. Download the project files. Create a new project called 'GoogleDocs' within Arduino and load all the relevant files above.
+2. Set the correct configuration parameters in the IDE: Board type: 'generic ESP8266',  Flash size, Upload speed etc. based on your board.
+3. In GoogleDocs.ino, set the following: (a) Your wifi SSID and password  (b) Terminal UART speed in the line `Serial.begin(115200);`.
+4. Compile and flash it onto the board. If all goes well and it is able to connect through yourr router to Google Docs, you should see the correct output in the terminal.
+5. This will work as-is with my Spreadsheet. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side below.
+
+## Server side
+You need to be familiar with the basics of javascript (on which Google script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
+
+(Copy of spreadsheet)
+The key steps are as follows:
+1. Create a new Google Spreadsheet in your account.
+2. Goto Tools->Script editor... and copy all the code from *Code.gs* into the editor.
+3. Get your *spreadsheet-id*. If you look at the URL in the browser tab where the spreadsheet is open, it'll be of the form: 
+`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`.
+The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and *GoogleDocs.ino* in the relevant lines.
+4. Publish your script by deploying it as a web app. The permissions should be set to "Execute the app as: Me (your email)" and "who has access to the app: Anyone, even anonymous". 
+5. Once these steps are completed, re-flash ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
+
+
 I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
   
