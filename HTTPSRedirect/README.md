@@ -1,8 +1,9 @@
-# HTTPS Redirect for ESP8266 (Version 2.0)
-This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
+# HTTPS Redirect (Version 2.0)
+## A library for seamless data logging, communication and control (with focus on ESP8266) for Internet of Things
+This library extends the *WiFiClientSecure* library ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
 *HTTPSRedirect* uses the header information in the server's reply to a HTTP *GET* or *POST* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
 
-This is, for example, used by a number of Google services. Hence, *HTTPSRedirect* can directly work with many web services (including Google Sheets, Calendar, Drive) without the need for 3rd party services like IFTTT, Temboo, Pushingbox, Thingspeak, etc.
+**HTTPSRedirect implements a novel HTTP client with *follow-redirects* which can directly work with many web services (including Google Sheets, Calendar, Drive) without the need for 3rd party services like IFTTT, Temboo, Pushingbox, Thingspeak, etc.**
 
 Version 2 of *HTTPSRedirect* has been completely rewritten for increased functionality, seamless library calls and maximizing performance.
 
