@@ -163,13 +163,14 @@ I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the 
 1. Download the project files. Create a new project called 'GoogleDocs' within Arduino and load all the relevant files above.
 2. Set the correct configuration parameters in the IDE: Board type: 'generic ESP8266',  Flash size, Upload speed etc. based on your board.
 3. In GoogleDocs.ino, set the following: (a) Your wifi SSID and password  (b) Terminal UART speed in the line `Serial.begin(115200);`.
-4. Compile and flash it onto the board. If all goes well and it is able to connect through yourr router to Google Docs, you should see the correct output in the terminal.
-5. This will work as-is with my Spreadsheet. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side below.
+4. Compile and flash it onto the board. If all goes well and it is able to connect through your router to Google Docs, you should see the correct output in the terminal. Note: Some people have reported that it fails to connect randomly. This may be a problem with your router, DNS or firewall settings. In that case, please switch to another router/wireless access point.
+5. As it stands, it will work as-is with my copy of the Spreadsheet and Google calendar. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side below.
 
 ## Server side
 You need to be familiar with the basics of javascript (on which Google script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
 
 (Copy of spreadsheet)
+(calendar)
 The key steps are as follows:
 1. Create a new Google Spreadsheet in your account.
 2. Goto Tools->Script editor... and copy all the code from *Code.gs* into the editor.
@@ -181,4 +182,7 @@ The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and
 
 
 I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
+If you like my work and would like to buy me some :coffee: :beer:, you can send your contributions here:
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/electronicsguy).
+Users in India can also send using Paytm to my wallet: [paytm](http://bit.ly/2o1GDrC)
   
