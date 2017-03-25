@@ -183,6 +183,8 @@ The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and
 
 I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
 If you like my work and would like to buy me some :coffee: :beer:, you can send your contributions here:
+
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/electronicsguy).
+
 Users in India can also send using Paytm to my wallet: [paytm](http://bit.ly/2o1GDrC)
   
