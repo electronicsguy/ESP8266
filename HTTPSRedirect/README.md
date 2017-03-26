@@ -69,7 +69,7 @@ String getResponseBody(void);
 ```
 
 ## Optimize Speed
-Most of the string arguments are passed by reference (or char *) to avoid inefficient calls to the copy constructor. In case of redirection, it is possible that a repeated operation needs to be made, which results in the same request being made to the endpoint everytime. In such cases, a special method is provided to speed up the process:
+Most of the string arguments are passed by reference (or char \*) to avoid inefficient calls to the copy constructor. In case of redirection, it is possible that a repeated operation needs to be made, which results in the same request being made to the endpoint everytime. In such cases, a special method is provided to speed up the process:
 ```C++
 bool HTTPSRedirect::reConnectFinalEndpoint(void);
 ```
@@ -172,7 +172,7 @@ I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the 
 5. As it stands, it will work as-is with my copy of the Spreadsheet and Google calendar. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side below.
 
 ## Server side
-You need to be familiar with the basics of javascript (on which Google script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
+You need to be familiar with the basics of Javascript (on which Google-script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
 
 (Copy of spreadsheet)
 (calendar)
