@@ -88,13 +88,17 @@ Note: `fetchBodyRaw()` is still unimplemented. `printHeaderFields()` works in de
 *HTTPSRedirect* supports a debugging mode for developers. This prints out extra debugging information to the Serial output when enabled. To enable, uncomment this line within DebugMacros.h: `#define DEBUG`.
 
 ## SSL Certificates
-WiFiClientSecure supports TLS v1.2 and X.509 certificate fingerprint verification for remote servers. In most cases, you could get the remote server fingerprint using online services like [grc](https://www.grc.com/fingerprints.htm). However, in case of Google Docs, this will not work. Google serves client requests from different servers based on geographical location and time of day. Hence, any fingerprint obtained from say GRC, will be from GRC's client location. You won't get the right fingerprint since it needs to be fetched locally from your location, at this point in time. To get around this problem, you need to run *openssl* locally (on your computer) in Linux, to get the remote server's fingerprint. The command is as follows: (ref: [openssl s_client](http://askubuntu.com/questions/156620/how-to-verify-the-ssl-fingerprint-by-command-line-wget-curl/))
+WiFiClientSecure supports TLS v1.2 and X.509 certificate fingerprint verification for remote servers. In most cases, you could get the remote server fingerprint using online services like [grc](https://www.grc.com/fingerprints.htm). However, in case of Google Docs, this will not work. Google serves HTTP client requests from different servers based on geographical location and time of day. Hence, any fingerprint obtained from say GRC, will be from GRC's client location. You won't get the right fingerprint since it needs to be fetched locally from your location, at this point in time. To get around this problem, you need to run *openssl* locally (on your computer) in Linux, to get the remote server's fingerprint. The command is as follows: (ref: [openssl s_client](http://askubuntu.com/questions/156620/how-to-verify-the-ssl-fingerprint-by-command-line-wget-curl/))
 ```bash
 echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
 ```
-Command syntax explanation here: [grep-pipe-ampersand](http://askubuntu.com/questions/24953/using-grep-with-pipe-and-ampersand-to-filter-errors-from-find) (If running this command on Mac OS, remove replace the "|&" with just the pipe "|".)
+ 
+Windows users can either use it from within a Linux virtual machine or Cygwin. Another alternative is to use pre-compiled binaries of openssl for Windows. There are available at: [gnuwin32-openssl](http://gnuwin32.sourceforge.net/packages/openssl.htm) or [fulgan-openssl](https://indy.fulgan.com/SSL/). Open up *cmd* within Windows, goto the directory containing the binary and run the above command.
 
-This will fetch a fingerprint string. Put this string in the example main file *GoogleDocs.ino" (`const char* fingerprint`).
+(Note: For both Windows and Mac OS, remove replace the "|&" with just the pipe "|".)
+Command syntax explanation here: [grep-pipe-ampersand](http://askubuntu.com/questions/24953/using-grep-with-pipe-and-ampersand-to-filter-errors-from-find)
+
+This will fetch a fingerprint string. Put this string in the example main file *GoogleDocs.ino* (`const char* fingerprint`).
 You can call the method *verify()* as shown in the example to perform fingerprint verification. However, this is not mandatory. HTTPSRedirect will function correctly even in case of a certificate mismatch (Unless there is some real MiTM attack going on). Also remember that in case of Google's servers, this fingerprint will only be valid from your physical location for a few hours/days. In case you want to use fingerprint verification with Google Docs, you will have to keep generating a new fingerprint every few hours/days.
 
 ---
