@@ -9,14 +9,15 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 
 ## Major features in Version 2
 [enhancements]
-* Implements a detailed HTTP Client
-* Implements *GET* and *POST* requests according to HTTP/1.1 specificaton
-* Handles identity, chunked and raw transfer encoding in the response body
-* Generic enough to follow as many number of redirections as required
-* Generic enough to connect to any server, not just Google Docs
-* Various performance improvements
+  * Implements a detailed HTTP Client
+  * Implements *GET* and *POST* requests according to HTTP/1.1 specificaton
+  * Handles identity, chunked and raw transfer encoding in the response body
+  * Generic enough to follow as many number of redirections as required
+  * Generic enough to connect to any server, not just Google Docs
+  * Various performance improvements
+  
 [bug fixes]
-* Correctly parses HTTP status codes and calculates chunk sizes (bug from V1)
+  * Correctly parses HTTP status codes and calculates transfer chunk sizes
 
 ## *HTTPSRedirect* Library API
 ![redirection logic](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.jpg)
@@ -130,7 +131,7 @@ Pragma: no-cache
 Transfer-Encoding: chunked
 ```
 
-The HTTP error code will be **302 Moved Temporarily**.
+The HTTP status code will be **302 Moved Temporarily**.
 
 Notice the field called **Location** in the response header. Even though we hit the script URL correctly (and passed on any parameters through the **GET** request), we will now need to follow this second link in order to get the return data. The second **GET** request has to be made to the domain: **https://script.googleusercontent.com/**. This URL is of the form:
 ```http
@@ -142,18 +143,27 @@ user_content_key=<long-random-data-key>
 The value of *lib* will be the same for a given published script. *user_content_key* will change for every content served up by the doGet() or doPost() within apps script.
  
 *HTTPSRedirect* follows this URL in a seamless fashion. It'll make both the **GET** requests and return the final data from the server in the response body.
-  
-Please check the **GoogleDocs** Arduino example included above, on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. The spreadsheet can be found at: [sample-spreadsheet](http://bit.ly/2og5Ldt). Create a copy of it in order to edit the contents.
-  
+
+Please check the **GoogleDocs** Arduino example included above, on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. 
+
+My copy of the spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
+
+You can view the contents of cell 'A1', the data rows and the chart here. Any new data from your device will be appended at the end.
+
 In order to view the return values from Google Docs, you need to open up a serial port terminal program (like CoolTerm) and connect to your IoT device (like ESP8266) from there. An easier option is to use the in-built "Serial Monitor" within Arduino itself. The advantage of this (over say Coolterm) is that it automatically disconnects when you recompile and re-flash, and then automatically reconnects to ESP8266. This saves a lot of effort in manually disconnecting and freeing up the serial port everytime we want to re-flash.
   
-The Arduino example does 3 things:
-  1. Makes a request to the script attached to the Google Spreadsheet, and write a value in the cell 'A1'.
+The Arduino example does the following:
+  1. Makes a GET request to the script attached to the Google Spreadsheet, and write a value in the cell 'A1'.
   
-  2. Fetches entries for the next 1 week from my Google calendar's test calendar.
+  2. Make a GET request and fetches entries for the next 1 week from my Google calendar's test calendar.
   
-  3. Make repeated requests to read the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell, you can *chat* with the ESP8266 :smile:
- 
+  3. Make repeated GET requests to read the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell (within your own copy of the spreadsheet), you can *chat* with the ESP8266 :smile:
+
+  4. Makes repeated POST requests and records the current value of the free heap and free stack sizes into the sheet.
+  
+Following is a representative image of the spreadsheet. Yours may not look like this if the data has been cleared. To generate a chart similar to this, create your own spreadsheet as explained in the next section, and let the device record around 200 rows of data.
+![spreadsheet](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/spreadsheet.jpg)
+
 This is how the Serial output looks like: 
 ![serial-output](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/output2.jpg)
 
@@ -174,8 +184,10 @@ I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the 
 ## Server side
 You need to be familiar with the basics of Javascript (on which Google-script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
 
-(Copy of spreadsheet)
+The spreadsheet (copyable) is here: [sample-spreadsheet](http://bit.ly/2og5Ldt). Create a copy of it in order to edit the contents.
+
 (calendar)
+
 The key steps are as follows:
 1. Create a new Google Spreadsheet in your account.
 2. Goto Tools->Script editor... and copy all the code from *Code.gs* into the editor.
