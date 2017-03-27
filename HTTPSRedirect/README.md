@@ -20,7 +20,7 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
   * Correctly parses HTTP status codes and calculates transfer chunk sizes
 
 ## *HTTPSRedirect* Library API
-<p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.svg" width="400" height="200"></p>
+<p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.png" width="400" height="200"></p>
 
 *HTTPSRedirect* is generic enough to be used as a standard HTTP/SSL client, even when the server has no redirection. Redirection logic is explained in the figure above. In case of a server using redirection (ie: 'Location' field in the first response header), the library will automatically follow the target URL(s) till it hits the final endpoint for the final response.
 
