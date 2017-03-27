@@ -20,7 +20,7 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
   * Correctly parses HTTP status codes and calculates transfer chunk sizes
 
 ## *HTTPSRedirect* Library API
-![redirection logic](https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.jpg)
+<p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/redirection.svg" width="400" height="200"></p>
 
 *HTTPSRedirect* is generic enough to be used as a standard HTTP/SSL client, even when the server has no redirection. Redirection logic is explained in the figure above. In case of a server using redirection (ie: 'Location' field in the first response header), the library will automatically follow the target URL(s) till it hits the final endpoint for the final response.
 
@@ -168,7 +168,7 @@ The test calendar that I have in my Google Calendar account look like this:
 <p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/Test-REST-API-calendar.JPG" width="600" height="300"></p>
 
 The data is fetch from my Spreadsheet and calendar and this is the Serial output:
-<p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/output2.jpg" width="600" height="300"></p>
+<p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/output.jpg" width="600" height="300"></p>
 
 ---
 
@@ -203,8 +203,7 @@ The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and
 
 I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
 If you like my work and would like to buy me some :coffee: :beer:, you can send your contributions here:
-
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/electronicsguy)
+<p align="center"><a href="https://paypal.me/electronicsguy" target="_blank"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" /></a></p>
 
 Users in India can also send using Paytm to my wallet: [paytm](http://bit.ly/2o1GDrC)
 
