@@ -187,16 +187,15 @@ I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the 
 ## Server side
 You need to be familiar with the basics of Javascript (on which Google-script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
 
-The spreadsheet (copyable) is here: [sample-spreadsheet](http://bit.ly/2og5Ldt). Create a copy of it in order to edit the contents.
+The spreadsheet (copyable) is here: [sample-spreadsheet](http://bit.ly/2og5Ldt). Create a copy of it in order to edit the contents. What you type in cell 'A1' will be reflected in the device Serial output.
 
-(calendar)
+You could also create your own calendar entries. Just make sure they repeat per week and change the calendar name appropriately in the `function GetEventsOneWeek()` within Code.gs.
 
-The key steps are as follows:
+The key steps for creating your own copy of the Spreadsheet and activating the script:
 1. Create a new Google Spreadsheet in your account.
 2. Goto Tools->Script editor... and copy all the code from *Code.gs* into the editor.
 3. Get your *spreadsheet-id*. If you look at the URL in the browser tab where the spreadsheet is open, it'll be of the form: 
-`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`.
-The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and *GoogleDocs.ino* in the relevant lines.
+`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`. The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and *GoogleDocs.ino* in the relevant lines.
 4. Publish your script by deploying it as a web app. The permissions should be set to "Execute the app as: Me (your email)" and "who has access to the app: Anyone, even anonymous". 
 5. Once these steps are completed, re-flash ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
 
