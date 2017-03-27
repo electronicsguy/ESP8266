@@ -1,8 +1,17 @@
-# HTTPS Redirect for ESP8266
+# HTTPS Redirect for ESP8266 Version 2
 
 This library extends the *WiFiClientSecure* library, which is an amazing piece of work by Ivan Grokhotkov ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
-*HTTPSRedirect* uses the header information in the server's reply to a *GET* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
- This is, for example, used by a number of Google services.
+*HTTPSRedirect* uses the header information in the server's reply to a HTTP *GET* or *POST* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
+This is, for example, used by a number of Google services.
+
+Version 2 of *HTTPSRedirect* has been completely rewritten for increased functionality, seamless library calls and maximizing performance.
+
+## Major features in Version 2
+* Implements *GET* and *PUSH* requests according to HTTP/1.1 specificaton
+* Handles raw and chunked encoding in response body
+* Correctly parses HTTP status codes and calculates chunk sizes (bug from V1)
+
+
 
 ## Working Example (Using Google Docs)
 With Google Apps Script, you can publish your Google Scripts on the web. These scripts can access a variety of Google services, 
