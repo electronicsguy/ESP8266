@@ -32,11 +32,11 @@ HTTPSRedirect(const int& p);
 ```
 where *p* denotes the HTTPS port to be used (default is 443).
 
-After initialization, use the method 
+After initialization, use the method:
 ```C++
-void printResponseBody(bool);
+void setPrintResponseBody(bool);
 ```
-to decide if you want the endpoint response body to be printed or not on the Serial output. If not printed to Serial output, it can be read using the method described below.
+to decide if you want the endpoint response body to be printed or not on the Serial output. If not printed to Serial output, it can be read using the method `getResponseBody()` described below.
 
 ### *HTTPSRedirect* methods:
 A *GET* request can be made by calling the following methods:
