@@ -183,7 +183,7 @@ I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the 
 2. Set the correct configuration parameters in the IDE: Board type: 'generic ESP8266',  Flash size, Upload speed etc. based on your board.
 3. In GoogleDocs.ino, set the following: (a) Your wifi SSID and password  (b) Terminal UART speed in the line `Serial.begin(115200);`.
 4. Compile and flash it onto the board. If all goes well and it is able to connect through your router to Google Docs, you should see the correct output in the terminal. Note: Some people have reported that it fails to connect randomly. This may be a problem with your router, DNS or firewall settings. In that case, please switch to another router/wireless access point.
-5. As it stands, it will work *as-is with my copy* of the Spreadsheet and Google calendar. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side as described below.
+5. As it stands, it will work as-is with my copy of the Spreadsheet and Google calendar. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side below.
 
 ### Server side
 You need to be familiar with the basics of Javascript (on which Google-script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
@@ -195,16 +195,10 @@ You could also create your own calendar entries. Just make sure they repeat per 
 The key steps for creating your own copy of the Spreadsheet and activating the script:
 1. Create a new Google Spreadsheet in your account.
 2. Goto Tools->Script editor... and copy all the code from *GoogleScript.gs* into the editor.
-3. You can goto the menu item "ESP8266 Logging -> Clear" to clear all the row contents from the sheet.
-4. Get your *spreadsheet-id*. If you look at the URL in the browser tab where the spreadsheet is open, it'll be of the form: 
-`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`. The *\<random string>* is your *spreadsheet-id*. Put this value in *GoogleScript.gs* in the relevant line.
-5. Publish your script by deploying it as a web app. The permissions should be set to "Execute the app as: Me (your email)" and "who has access to the app: Anyone, even anonymous". Once you oublish your script, the script editor popup will say: "This project is now deployed as a web app.". It'll also display the URL for the webapp. Grab the string of random characters between "/macros/s/" and /"exec".
-
-Example: If your URL looks like this: `https://script.google.com/macros/s/XXXYYY/exec`, then "XXXYYY" is your **GScriptId**. Put this value in GoogleDocs.ino for it to hit your script instead of mine.
-
-**Important Note:** You need to re-publish your web-app (with a new version) number **every time** any change any made to your script. Google Apps script serves requests only with a published version of your script, not necessarily the *latest* one. This is an unfortunate Google Apps Script limitation. However, your *GScriptId* will remain the same.
-
-6. Once these steps are completed, re-flash your ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
+3. Get your *spreadsheet-id*. If you look at the URL in the browser tab where the spreadsheet is open, it'll be of the form: 
+`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`. The *\<random string>* is your *spreadsheet-id*. Put this value in *GoogleScript.gs* and *GoogleDocs.ino* in the relevant lines.
+4. Publish your script by deploying it as a web app. The permissions should be set to "Execute the app as: Me (your email)" and "who has access to the app: Anyone, even anonymous". 
+5. Once these steps are completed, re-flash ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
 
 ---
 
