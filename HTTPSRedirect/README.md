@@ -165,10 +165,10 @@ The Arduino example does the following:
 Following is a representative image of the spreadsheet. (Yours may not look like this if the data has been cleared. To generate a chart similar to this, create your own spreadsheet as explained in the next section, and let the device record around 200 rows of data.)
 <p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/spreadsheet.jpg" width="600" height="300"></p>
 
-The test calendar that I have in my Google Calendar account look like this:
+The test calendar that I have in my Google Calendar account looks like this:
 <p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/Test-REST-API-calendar.JPG" width="600" height="300"></p>
 
-The data is fetch from my Spreadsheet and calendar and this is the Serial output:
+The data is fetched from my Spreadsheet and Google calendar. This is the Serial output:
 <p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/output.jpg" width="600" height="300"></p>
 
 ---
@@ -176,7 +176,7 @@ The data is fetch from my Spreadsheet and calendar and this is the Serial output
 ## Sec. IV(b) Steps to get it working
 You need to be familiar with using Arduino IDE in general and how to use the IDE to create a project and flash the ESP8266. Refer this to link for guidance: [programming-esp8266-arduino](https://create.arduino.cc/projecthub/Metavix/programming-the-esp8266-with-the-arduino-ide-601c16)
 
-I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the other higher flash memeory versions as well (like ESP12).
+I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the other higher flash memeory versions as well (like ESP-12).
 
 ### Client side
 1. Download the project files. Create a new project called 'GoogleDocs' within Arduino and load all the relevant files above.
