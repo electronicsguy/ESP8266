@@ -7,7 +7,7 @@ This library extends the *WiFiClientSecure* library ([Ivan-github](https://githu
 
 Version 2 of *HTTPSRedirect* has been completely rewritten for increased functionality, seamless library calls and maximizing performance.
 
-## Major features in Version 2
+## Sec. I Major features in Version 2
 [enhancements]
   * Implements a detailed HTTP Client
   * Implements *GET* and *POST* requests according to HTTP/1.1 specificaton
@@ -19,12 +19,12 @@ Version 2 of *HTTPSRedirect* has been completely rewritten for increased functio
 [bug fixes]
   * Correctly parses HTTP status codes and calculates transfer chunk sizes
 
-## *HTTPSRedirect* Library API
+## Sec. II *HTTPSRedirect* Library API
 <p align="center"><img src="https://cdn.rawgit.com/electronicsguy/ESP8266/7d457c35/HTTPSRedirect/Extra/redirection.svg" width="400" height="200"></p>
 
 *HTTPSRedirect* is generic enough to be used as a standard HTTP/SSL client, even when the server has no redirection. Redirection logic is explained in the figure above. In case of a server using redirection (ie: 'Location' field in the first response header), the library will automatically follow the target URL(s) till it hits the final endpoint for the final response.
 
-### *HTTPSRedirect* Initialization:
+### Sec. II(a) *HTTPSRedirect* Initialization:
 Initialize a new *HTTPSRedirect* variable or object using either of these constructors:
 ```C++
 HTTPSRedirect(void);
@@ -38,7 +38,7 @@ void setPrintResponseBody(bool);
 ```
 to decide if you want the endpoint response body to be printed or not on the Serial output. If not printed to Serial output, it can be read using the method `getResponseBody()` described below.
 
-### *HTTPSRedirect* methods:
+### Sec. II(b) *HTTPSRedirect* methods:
 A *GET* request can be made by calling the following methods:
 
 ```C++
@@ -68,15 +68,15 @@ If the request was successful, the endpoint response can be obtained as a string
 ```C++
 String getResponseBody(void);
 ```
-
-## Optimize Speed
+## Sec. III Features and Notes:
+### Sec. III(a) Optimize Speed
 Most of the string arguments are passed by reference (or char \*) to avoid inefficient calls to the copy constructor. In case of redirection, it is possible that a repeated operation needs to be made, which results in the same request being made to the endpoint everytime. In such cases, a special method is provided to speed up the process:
 ```C++
 bool HTTPSRedirect::reConnectFinalEndpoint(void);
 ```
 *reConnectFinalEndpoint*, as the name implies, will directly reconnect to the last endpoint stored from previous requests. It'll return the response as per the data provided by the server. Hence, all the steps to compute the endpoint are avoided, speeding up the response rate. You can disable this by commenting out the `#define OPTIMIZE_SPEED` declaration within HTTPSRedirect.h.
 
-## Extra functions
+### Sec. III(b) Extra functions
 These methods are not included by default to minimize the memory footprint:
 ```C++
 void fetchBodyRaw(void);
@@ -85,10 +85,10 @@ void printHeaderFields(void);
 To enable them, uncomment this declaration within HTTPSRedirect.h `#define EXTRA_FNS`.
 Note: `fetchBodyRaw()` is still unimplemented. `printHeaderFields()` works in debugging mode (described below) to print some of the relevant header fields.
 
-## Debugging
+### Sec. III(c) Debugging
 *HTTPSRedirect* supports a debugging mode for developers. This prints out extra debugging information to the Serial output when enabled. To enable, uncomment this line within DebugMacros.h: `#define DEBUG`.
 
-## SSL Certificates
+### Sec. III(d) SSL Certificates
 WiFiClientSecure supports TLS v1.2 and X.509 certificate fingerprint verification for remote servers. In most cases, you could get the remote server fingerprint using online services like [grc](https://www.grc.com/fingerprints.htm). However, in case of Google Docs, this will not work. Google serves HTTP client requests from different servers based on geographical location and time of day. Hence, any fingerprint obtained from say GRC, will be from GRC's client location. You won't get the right fingerprint since it needs to be fetched locally from your location, at this point in time. To get around this problem, you need to run *openssl* locally (on your computer) in Linux, to get the remote server's fingerprint. The command is as follows: (ref: [openssl s_client](http://askubuntu.com/questions/156620/how-to-verify-the-ssl-fingerprint-by-command-line-wget-curl/))
 ```bash
 echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
@@ -104,7 +104,8 @@ You can call the method *verify()* as shown in the example to perform fingerprin
 
 ---
 
-# Working Example (Using Google Docs)
+# Sec. IV Working Example (Using Google Docs)
+## Sec. IV(a) GoogleDocs.ino Arduino Script
 With Google Apps Script, you can publish your Google Scripts on the web. These scripts can access a variety of Google services, 
 like Gmail, Google Docs, Calendar, Drive, etc. Google requires all access to their services use HTTP over SSL/TLS. Hence the regular *WiFiClient* is not suitable and *WiFiClientSecure* must be used. However, *WiFiClientSecure* does not follow redirects and hence doesn't work directly with Google Docs.
 
@@ -172,19 +173,19 @@ The data is fetch from my Spreadsheet and calendar and this is the Serial output
 
 ---
 
-# Steps to get it working
+## Sec. IV(b) Steps to get it working
 You need to be familiar with using Arduino IDE in general and how to use the IDE to create a project and flash the ESP8266. Refer this to link for guidance: [programming-esp8266-arduino](https://create.arduino.cc/projecthub/Metavix/programming-the-esp8266-with-the-arduino-ide-601c16)
 
 I tested the code on an ESP8266 model ESP-01 and ESP-01E. It should work on the other higher flash memeory versions as well (like ESP12).
 
-## Client side
+### Client side
 1. Download the project files. Create a new project called 'GoogleDocs' within Arduino and load all the relevant files above.
 2. Set the correct configuration parameters in the IDE: Board type: 'generic ESP8266',  Flash size, Upload speed etc. based on your board.
 3. In GoogleDocs.ino, set the following: (a) Your wifi SSID and password  (b) Terminal UART speed in the line `Serial.begin(115200);`.
 4. Compile and flash it onto the board. If all goes well and it is able to connect through your router to Google Docs, you should see the correct output in the terminal. Note: Some people have reported that it fails to connect randomly. This may be a problem with your router, DNS or firewall settings. In that case, please switch to another router/wireless access point.
 5. As it stands, it will work as-is with my copy of the Spreadsheet and Google calendar. It will write to it and read from it. But you won't be able to modify it yourself. In order to create a copy of the sheet for yourself so that you can modify it, follow the steps for server side below.
 
-## Server side
+### Server side
 You need to be familiar with the basics of Javascript (on which Google-script is based) as well as the basics of using Google Apps Script editor to publish your own scripts. Refer to the guide here: [apps-script-tutorial](https://developers.google.com/apps-script/articles).
 
 The spreadsheet (copyable) is here: [sample-spreadsheet](http://bit.ly/2og5Ldt). Create a copy of it in order to edit the contents. What you type in cell 'A1' will be reflected in the device Serial output.
@@ -199,6 +200,7 @@ The key steps for creating your own copy of the Spreadsheet and activating the s
 4. Publish your script by deploying it as a web app. The permissions should be set to "Execute the app as: Me (your email)" and "who has access to the app: Anyone, even anonymous". 
 5. Once these steps are completed, re-flash ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
 
+---
 
 I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
 If you like my work and would like to buy me some :coffee: :beer:, you can send your contributions here:
