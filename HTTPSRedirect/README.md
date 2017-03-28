@@ -202,7 +202,7 @@ The key steps for creating your own copy of the Spreadsheet and activating the s
 
 Example: If your URL looks like this: `https://script.google.com/macros/s/XXXYYY/exec`, then "XXXYYY" is your **GScriptId**. Put this value in GoogleDocs.ino for it to hit your script instead of mine.
 
-**Important Note:** You need to re-publish your web-app (with a new version) number **every time** any change any made to your script. Google Apps script serves requests only with a published version of your script, not necessarily the *latest* one. This is an unfortunate Google Apps Script limitation. However, your *GScriptId* will remain the same.
+**Important Note:** You need to re-publish your web-app (with a new version number) **every time** any change any made to your script. Google Apps script serves requests only with a published version of your script, not necessarily the *latest* one. This is an unfortunate Google Apps Script limitation. However, your *GScriptId* will remain the same.
 
 6. Once these steps are completed, re-flash your ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
 
