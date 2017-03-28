@@ -145,7 +145,7 @@ The value of *lib* will be the same for a given published script. *user_content_
  
 *HTTPSRedirect* follows this URL in a seamless fashion. It'll make both the **GET** requests and return the final data from the server in the response body.
 
-Please check the **GoogleDocs** Arduino example included above, on how to use this library. The *Extra* folder contains the Google Apps script that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. 
+Please check the **GoogleDocs** Arduino example included above, on how to use this library. The server-side code is in the file **GoogleScript.gs**, that you can use for your own spreadsheet. It also has an image of the test calendar whose entries are fetched by the above example. 
 
 My copy of the spreadsheet can be found at: [spreadsheet](http://bit.ly/1Ql4qrN).
 
@@ -160,7 +160,7 @@ The Arduino example does the following:
   
   3. Make repeated GET requests to read the cell 'A1' of the spreadsheet. In this way, if you manually type something in the cell (within your own copy of the spreadsheet), you can *chat* with the ESP8266 :smile:
 
-  4. Makes repeated POST requests and records the current value of the free heap and free stack sizes into the sheet.
+  4. Makes repeated POST requests and records the current value of the free heap and free stack sizes into the sheet. These are plotted in the chart. 
   
 Following is a representative image of the spreadsheet. (Yours may not look like this if the data has been cleared. To generate a chart similar to this, create your own spreadsheet as explained in the next section, and let the device record around 200 rows of data.)
 <p align="center"><img src="https://github.com/electronicsguy/ESP8266/blob/master/HTTPSRedirect/Extra/spreadsheet.jpg" width="600" height="300"></p>
@@ -190,13 +190,13 @@ You need to be familiar with the basics of Javascript (on which Google-script is
 
 The spreadsheet (copyable) is here: [sample-spreadsheet](http://bit.ly/2og5Ldt). Create a copy of it in order to edit the contents. What you type in cell 'A1' will be reflected in the device Serial output.
 
-You could also create your own calendar entries. Just make sure they repeat per week and change the calendar name appropriately in the `function GetEventsOneWeek()` within Code.gs.
+You could also create your own calendar entries. Just make sure they repeat per week and change the calendar name appropriately in the `function GetEventsOneWeek()` within GoogleScript.gs.
 
 The key steps for creating your own copy of the Spreadsheet and activating the script:
 1. Create a new Google Spreadsheet in your account.
-2. Goto Tools->Script editor... and copy all the code from *Code.gs* into the editor.
+2. Goto Tools->Script editor... and copy all the code from *GoogleScript.gs* into the editor.
 3. Get your *spreadsheet-id*. If you look at the URL in the browser tab where the spreadsheet is open, it'll be of the form: 
-`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`. The *\<random string>* is your *spreadsheet-id*. Put this value in *Code.gs* and *GoogleDocs.ino* in the relevant lines.
+`https://docs.google.com/spreadsheets/d/<random-string>/edit#gid=0`. The *\<random string>* is your *spreadsheet-id*. Put this value in *GoogleScript.gs* and *GoogleDocs.ino* in the relevant lines.
 4. Publish your script by deploying it as a web app. The permissions should be set to "Execute the app as: Me (your email)" and "who has access to the app: Anyone, even anonymous". 
 5. Once these steps are completed, re-flash ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
 
