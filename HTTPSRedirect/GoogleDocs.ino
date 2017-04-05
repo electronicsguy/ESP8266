@@ -19,8 +19,8 @@ extern "C" {
 }
 
 // Fill ssid and password with your network credentials
-const char* ssid = "SandyBlondieCandy";
-const char* password = "1Organicladki!";
+const char* ssid = "";
+const char* password = "";
 
 const char* host = "script.google.com";
 // Replace with your own script id to make server side changes
@@ -43,7 +43,7 @@ String payload_base =  "{\"command\": \"appendRow\", \
                     \"values\": ";
 String payload = "";
 
-HTTPSRedirect* client = NULL;
+HTTPSRedirect* client = nullptr;
 // used to store the values of free stack and heap
 // before the HTTPSRedirect object is instantiated
 // so that they can be written to Google sheets
@@ -78,7 +78,7 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   // Use HTTPSRedirect class to create a new TLS connection
-  HTTPSRedirect* client = new HTTPSRedirect(httpsPort);
+  client = new HTTPSRedirect(httpsPort);
   client->setPrintResponseBody(true);
   Serial.print("Connecting to ");
   Serial.println(host);
@@ -146,7 +146,7 @@ void setup() {
 
   // delete HTTPSRedirect object
   delete client;
-  client = NULL;
+  client = nullptr;
 }
 
 void loop() {
@@ -165,7 +165,7 @@ void loop() {
     client->setPrintResponseBody(true);
   }
 
-  if (client != NULL){
+  if (client != nullptr){
     if (!client->connected()){
       client->connect(host, httpsPort);
       payload = payload_base + "\"" + free_heap_before + "," + free_stack_before + "\"}";
@@ -219,7 +219,7 @@ void loop() {
   if (error_count > 3){
     Serial.println("Halting processor..."); 
     delete client;
-    client = NULL;
+    client = nullptr;
     Serial.printf("Final free heap: %u\n", ESP.getFreeHeap());
     Serial.printf("Final unmodified stack   = %4d\n", cont_get_free_stack(&g_cont));
     Serial.flush();
@@ -232,13 +232,3 @@ void loop() {
                           
 }
 
-// Additional Notes:
-// https://isc.sans.edu/forums/diary/Stuff+I+Learned+Scripting+Evaluating+a+Remote+SSL+Certificate/11962/
-// https://www.feistyduck.com/library/openssl-cookbook/online/ch-testing-with-openssl.html
-
-// Debugging:
-// https://github.com/esp8266/Arduino/issues/1679
-// https://github.com/esp8266/Arduino/blob/master/cores/esp8266/cont.h#L65
-// https://github.com/esp8266/Arduino/issues/230
-// https://github.com/esp8266/Arduino/issues/986
-// http://stackoverflow.com/questions/37087039/arduino-esp8266-free-heap-ram-goes-down-with-each-web-page-request
