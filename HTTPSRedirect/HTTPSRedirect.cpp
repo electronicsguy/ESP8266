@@ -429,7 +429,7 @@ void HTTPSRedirect::setMaxRedirects(const unsigned int n){
   _maxRedirects = n;  // to-do: use this in code above
 }
 
-void HTTPSRedirect::setContentTypeHeader(char *type){
+void HTTPSRedirect::setContentTypeHeader(const char *type){
   _contentTypeHeader = type;
 }
 
