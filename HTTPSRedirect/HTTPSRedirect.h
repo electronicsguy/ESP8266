@@ -20,7 +20,7 @@ class HTTPSRedirect : public WiFiClientSecure {
     String _redirUrl;
     String _redirHost;
     unsigned int _maxRedirects;  // to-do
-    char* _contentTypeHeader;
+    const char* _contentTypeHeader;
     
     struct headerFields{
       String transferEncoding;
@@ -78,7 +78,7 @@ class HTTPSRedirect : public WiFiClientSecure {
     void setPrintResponseBody(bool);
     void setMaxRedirects(const unsigned int);
     
-    void setContentTypeHeader(char *);
+    void setContentTypeHeader(const char *);
 #ifdef OPTIMIZE_SPEED
     bool reConnectFinalEndpoint(void);
 #endif
