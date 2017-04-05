@@ -94,7 +94,7 @@ WiFiClientSecure supports TLS v1.2 and X.509 certificate fingerprint verificatio
 echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
 ```
  
-Windows users can either use it from within a Linux virtual machine or Cygwin. Another alternative is to use pre-compiled binaries of openssl for Windows. These are available at: [gnuwin32-openssl](http://gnuwin32.sourceforge.net/packages/openssl.htm) or [fulgan-openssl](https://indy.fulgan.com/SSL/). Open up *cmd* within Windows, goto the directory containing the binary and run the above command.
+Windows users can either use it from within a Linux virtual machine or Cygwin. Another alternative is to use pre-compiled binaries of openssl for Windows. These are available at: [gnuwin32-openssl](http://gnuwin32.sourceforge.net/packages/openssl.htm) or [fulgan-openssl](https://indy.fulgan.com/SSL/). Open up *cmd* within Windows, goto the directory containing the binary and run the above command. I've uploaded a Windows batch file(fingerprint.bat) that you can use to automate getting the fingerprint in the future.
 
 (Note: For both Windows and Mac OS, remove replace the "|&" with just the pipe "|".)
 Command syntax explanation here: [grep-pipe-ampersand](http://askubuntu.com/questions/24953/using-grep-with-pipe-and-ampersand-to-filter-errors-from-find)
