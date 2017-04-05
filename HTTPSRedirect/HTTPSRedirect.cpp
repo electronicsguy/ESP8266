@@ -25,6 +25,7 @@ void HTTPSRedirect::Init(void){
   _keepAlive = true;
   _printResponseBody = false;
   _maxRedirects = 10;
+  _contentTypeHeader = "application/x-www-form-urlencoded";
 }
 
 // This is the main function which is similar to the method
@@ -145,7 +146,7 @@ void HTTPSRedirect::createPostRequest(const String& url, const char* host, const
                           "Host: " + host + "\r\n" +
                           "User-Agent: ESP8266\r\n" +
                           (_keepAlive ? "" : "Connection: close\r\n") +
-                          "Content-Type: application/x-www-form-urlencoded\r\n" + 
+                          "Content-Type: " + _contentTypeHeader + "\r\n" +
                           "Content-Length: " + len + "\r\n" +
                           "\r\n" +
                           payload + 
@@ -426,6 +427,10 @@ void HTTPSRedirect::setPrintResponseBody(bool disp){
 
 void HTTPSRedirect::setMaxRedirects(const unsigned int n){
   _maxRedirects = n;  // to-do: use this in code above
+}
+
+void HTTPSRedirect::setContentTypeHeader(char *type){
+  _contentTypeHeader = type;
 }
 
 #ifdef OPTIMIZE_SPEED
