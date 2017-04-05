@@ -29,7 +29,7 @@ const char *GScriptId = "AKfycbzYw5G-oxvnwHpAJfDsS0PWNrO0KTBMiCW78lHUcEO6ZnFHvSw
 const int httpsPort = 443;
 
 // echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
-const char* fingerprint = "C6:26:24:D8:FC:11:A4:66:A9:34:0B:8B:E7:7D:7C:A0:A6:F4:B1:71";
+const char* fingerprint = "";
 
 // Write to Google Spreadsheet
 String url = String("/macros/s/") + GScriptId + "/exec?value=Hello";
