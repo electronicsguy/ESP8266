@@ -192,7 +192,7 @@ void loop() {
   else{
     ++error_count;
     DPRINT("Error-count while connecting: ");
-    DPRINTLN(count);
+    DPRINTLN(error_count);
   }
 
   Serial.println("POST append memory data to spreadsheet:");
@@ -203,17 +203,17 @@ void loop() {
   else{
     ++error_count;
     DPRINT("Error-count while connecting: ");
-    DPRINTLN(count);
+    DPRINTLN(error_count);
   }
 
   /*
   if (!(client.reConnectFinalEndpoint())){
-    ++count;
+    ++error_count;
     DPRINT("Error-count while connecting: ");
-    DPRINTLN(count);
+    DPRINTLN(error_count);
   }
   else
-    count = 0;
+    error_count = 0;
   */
   
   if (error_count > 3){
