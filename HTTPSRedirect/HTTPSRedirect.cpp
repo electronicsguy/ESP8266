@@ -146,7 +146,7 @@ void HTTPSRedirect::createPostRequest(const String& url, const char* host, const
                           "Host: " + host + "\r\n" +
                           "User-Agent: ESP8266\r\n" +
                           (_keepAlive ? "" : "Connection: close\r\n") +
-                          "Content-Type: " + _contentTypeHeader + "\r\n" +
+                          "Content-Type: " + _contentTypeHeader + "\r\n" + 
                           "Content-Length: " + len + "\r\n" +
                           "\r\n" +
                           payload + 
@@ -254,6 +254,7 @@ void HTTPSRedirect::fetchBodyUnChunked(unsigned len){
       Serial.println(line);
 
     _myResponse.body += line;
+    _myResponse.body += '\n';
 
   }
 }
@@ -286,6 +287,7 @@ void HTTPSRedirect::fetchBodyChunked(void){
         Serial.println(line);
 
       _myResponse.body += line;
+      _myResponse.body += '\n';
       
       chunkSize -= line.length();
       // The line above includes the '\r' character 
@@ -469,6 +471,7 @@ void HTTPSRedirect::fetchBodyRaw(void){
       Serial.println(line);
 
     _myResponse.body += line;
+    _myResponse.body += '\n';
   }
 }
 
@@ -481,3 +484,4 @@ void HTTPSRedirect::printHeaderFields(void){
   DPRINTLN(_hF.contentType);
 }
 #endif
+
