@@ -207,6 +207,7 @@ Example: If your URL looks like this: `https://script.google.com/macros/s/XXXYYY
 6. Once these steps are completed, re-flash your ESP82666 with the new spreadsheet-id code. It should then read and write to your copy of the spreadsheet.
 
 ---
+Note: HTTPSRedirect is free for personal, non-commercial use only. In case of use for profit or more than 10 devices per person, please contact the author for purchasing a licence.
 
 I hope you enjoy using this library. Please try it out for yourself. Your comments and suggestions are most welcome.
 If you like my work and would like to buy me some :coffee: :beer:, you can send your contributions here:
