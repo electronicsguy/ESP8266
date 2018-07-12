@@ -38,9 +38,12 @@ String url2 = String("/macros/s/") + GScriptId + "/exec?cal";
 // Read from Google Spreadsheet
 String url3 = String("/macros/s/") + GScriptId + "/exec?read";
 
-String payload_base =  "{\"command\": \"appendRow\", \
-                    \"sheet_name\": \"Sheet1\", \
-                    \"values\": ";
+//write to this sheet (mind the localizations of the Spreadsheet):
+const char *sheet_name = "Sheet1";  
+
+String payload_base =  "{\"command\": \"appendRow\", \ 
+                     \"sheet_name\": \"" + sheet_name + "\", \ 
+                     \"values\": ";
 String payload = "";
 
 HTTPSRedirect* client = nullptr;
