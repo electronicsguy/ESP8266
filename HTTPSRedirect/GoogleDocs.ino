@@ -1,8 +1,8 @@
 /*  HTTPS on ESP8266 with follow redirects, chunked encoding support
- *  Version 2.1
+ *  Version 3.0
  *  Author: Sujay Phadke
  *  Github: @electronicsguy
- *  Copyright (C) 2017 Sujay Phadke <electronicsguy123@gmail.com>
+ *  Copyright (C) 2018 Sujay Phadke <electronicsguy123@gmail.com>
  *  All rights reserved.
  *
  *  Example Arduino program
@@ -11,12 +11,6 @@
 #include <ESP8266WiFi.h>
 #include "HTTPSRedirect.h"
 #include "DebugMacros.h"
-
-// for stack analytics
-extern "C" {
-#include <cont.h>
-  extern cont_t g_cont;
-}
 
 // Fill ssid and password with your network credentials
 const char* ssid = "";
@@ -30,6 +24,7 @@ const int httpsPort = 443;
 
 // echo | openssl s_client -connect script.google.com:443 |& openssl x509 -fingerprint -noout
 const char* fingerprint = "";
+//const uint8_t fingerprint[20] = {};
 
 // Write to Google Spreadsheet
 String url = String("/macros/s/") + GScriptId + "/exec?value=Hello";
@@ -56,9 +51,9 @@ void setup() {
   Serial.flush();
   
   free_heap_before = ESP.getFreeHeap();
-  free_stack_before = cont_get_free_stack(&g_cont);
-  Serial.printf("Free heap before: %u\n", free_heap_before);
-  Serial.printf("unmodified stack   = %4d\n", free_stack_before);
+  free_stack_before = ESP.getFreeContStack();
+  Serial.printf("Free heap: %u\n", free_heap_before);
+  Serial.printf("Free stack: %u\n", free_stack_before);
   
   Serial.println();
   Serial.print("Connecting to wifi: ");
@@ -79,6 +74,7 @@ void setup() {
 
   // Use HTTPSRedirect class to create a new TLS connection
   client = new HTTPSRedirect(httpsPort);
+  client->setInsecure();
   client->setPrintResponseBody(true);
   client->setContentTypeHeader("application/json");
   
@@ -103,17 +99,19 @@ void setup() {
     Serial.println("Exiting...");
     return;
   }
-  
-  if (client->verify(fingerprint, host)) {
+
+/*  
+  if (client->setFingerprint(fingerprint)) {
     Serial.println("Certificate match.");
   } else {
     Serial.println("Certificate mis-match");
   }
+*/ 
 
   // Send memory data to Google Sheets
   payload = payload_base + "\"" + free_heap_before + "," + free_stack_before + "\"}";
   client->POST(url2, host, payload, false);
-  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + cont_get_free_stack(&g_cont) + "\"}";
+  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + ESP.getFreeContStack() + "\"}";
   client->POST(url2, host, payload, false);
   
   // Note: setup() must finish within approx. 1s, or the the watchdog timer
@@ -127,7 +125,7 @@ void setup() {
   client->GET(url, host);
 
   // Send memory data to Google Sheets
-  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + cont_get_free_stack(&g_cont) + "\"}";
+  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + ESP.getFreeContStack() + "\"}";
   client->POST(url2, host, payload, false);
   
   Serial.println("\nGET: Fetch Google Calendar Data:");
@@ -137,14 +135,14 @@ void setup() {
   client->GET(url2, host);
 
   // Send memory data to Google Sheets
-  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + cont_get_free_stack(&g_cont) + "\"}";
+  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + ESP.getFreeContStack() + "\"}";
   client->POST(url2, host, payload, false);
   
   Serial.println("\nSeries of GET and POST requests");
   Serial.println("===============================");
   
   Serial.printf("Free heap: %u\n", ESP.getFreeHeap());
-  Serial.printf("unmodified stack   = %4d\n", cont_get_free_stack(&g_cont));
+  Serial.printf("Free stack: %u\n", ESP.getFreeContStack());
 
   // delete HTTPSRedirect object
   delete client;
@@ -157,12 +155,13 @@ void loop() {
   const unsigned int MAX_CONNECT = 20;
   static bool flag = false;
   //Serial.printf("Free heap: %u\n", ESP.getFreeHeap());
-  //Serial.printf("unmodified stack   = %4d\n", cont_get_free_stack(&g_cont));
+  //Serial.printf("Free stack: %u\n", ESP.getFreeContStack());
   
   if (!flag){
     free_heap_before = ESP.getFreeHeap();
-    free_stack_before = cont_get_free_stack(&g_cont);
+    free_stack_before = ESP.getFreeContStack();
     client = new HTTPSRedirect(httpsPort);
+    client->setInsecure();
     flag = true;
     client->setPrintResponseBody(true);
     client->setContentTypeHeader("application/json");
@@ -199,7 +198,7 @@ void loop() {
   }
 
   Serial.println("POST append memory data to spreadsheet:");
-  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + cont_get_free_stack(&g_cont) + "\"}";
+  payload = payload_base + "\"" + ESP.getFreeHeap() + "," + ESP.getFreeContStack() + "\"}";
   if(client->POST(url2, host, payload)){
     ;
   }
@@ -216,7 +215,7 @@ void loop() {
     DPRINTLN(error_count);
   }
   else
-    error_count = 0;
+    error_countunt = 0;
   */
   
   if (error_count > 3){
@@ -224,7 +223,7 @@ void loop() {
     delete client;
     client = nullptr;
     Serial.printf("Final free heap: %u\n", ESP.getFreeHeap());
-    Serial.printf("Final unmodified stack   = %4d\n", cont_get_free_stack(&g_cont));
+    Serial.printf("Final stack: %u\n", ESP.getFreeContStack());
     Serial.flush();
     ESP.deepSleep(0);
   }
@@ -234,4 +233,3 @@ void loop() {
   delay(4000);
                           
 }
-
