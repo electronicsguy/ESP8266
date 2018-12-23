@@ -1,4 +1,4 @@
-# HTTPS Redirect (Version 2.0)
+# HTTPS Redirect
 ## A library for seamless data logging, communication and control for Internet of Things (focus: ESP8266, ESP32)
 This library extends the *WiFiClientSecure* library ([Ivan-github](https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/WiFiClientSecure.h)). 
 *HTTPSRedirect* uses the header information in the server's reply to a HTTP *GET* or *POST* request, and follows the re-direction URL by making another suitable *GET* request. In many cases, it is this re-directed URL which would present the final data that was required. 
@@ -100,7 +100,9 @@ Windows users can either use it from within a Linux virtual machine or Cygwin. A
 Command syntax explanation here: [grep-pipe-ampersand](http://askubuntu.com/questions/24953/using-grep-with-pipe-and-ampersand-to-filter-errors-from-find)
 
 This will fetch a fingerprint string. Put this string in the example main file *GoogleDocs.ino* (`const char* fingerprint`).
-You can call the method *verify()* as shown in the example to perform fingerprint verification. However, this is not mandatory. HTTPSRedirect will function correctly even in case of a certificate mismatch (Unless there is some real MiTM attack going on). Also remember that in case of Google's servers, this fingerprint will only be valid from your physical location for a few hours/days. In case you want to use fingerprint verification with Google Docs, you will have to keep generating a new fingerprint every few hours/days.
+You can call the method *setFingerprint()* as shown in the example to perform fingerprint verification. However, this is not mandatory. HTTPSRedirect will function correctly even in case of a certificate mismatch (Unless there is some real MiTM attack going on). Also remember that in case of Google's servers, this fingerprint will only be valid from your physical location for a few hours/days. In case you want to use fingerprint verification with Google Docs, you will have to keep generating a new fingerprint every few hours/days.
+
+Update Dec 2018: With the new version of esp8266 (v2.5.0-beta2) BearSSL is the default and currently I've not been able to verify fingerprints correctly, so it's been disabled. (setInsecure() is used before making requests). This will be updated in the future.
 
 ---
 
