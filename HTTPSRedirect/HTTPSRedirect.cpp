@@ -155,6 +155,25 @@ void HTTPSRedirect::createPostRequest(const String& url, const char* host, const
   return;
 }
 
+void HTTPSRedirect::createPostRequestcustomHeader(const String& url, const char* host, const String& customHeader, const String& payload){
+  // Content-Length is mandatory in POST requests
+  // Body content will include payload and a newline character
+  unsigned int len = payload.length() + 1;
+  
+  _Request =  String("POST ") + url + " HTTP/1.1\r\n" +
+                          "Host: " + host + "\r\n" +
+                          "User-Agent: ESP8266\r\n" +
+                          customHeader + "\r\n" +
+                          (_keepAlive ? "" : "Connection: close\r\n") +
+                          "Content-Type: " + _contentTypeHeader + "\r\n" + 
+                          "Content-Length: " + len + "\r\n" +
+                          "\r\n" +
+                          payload + 
+                          "\r\n\r\n";
+
+  return;
+}
+
 
 bool HTTPSRedirect::getLocationURL(void){
 
