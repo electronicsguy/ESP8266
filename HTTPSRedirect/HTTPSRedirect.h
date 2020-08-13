@@ -54,6 +54,7 @@ class HTTPSRedirect : public WiFiClientSecure {
     void InitResponse(void);
     void createGetRequest(const String&, const char*);
     void createPostRequest(const String&, const char*, const String&);
+    void createPostRequestcustomHeader(const String&, const char*, const String& , const String&);
     
 #ifdef EXTRA_FNS
     void fetchBodyRaw(void);
