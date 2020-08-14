@@ -163,9 +163,9 @@ void HTTPSRedirect::createPostRequestcustomHeader(const String& url, const char*
   _Request =  String("POST ") + url + " HTTP/1.1\r\n" +
                           "Host: " + host + "\r\n" +
                           "User-Agent: ESP8266\r\n" +
-                          customHeader + "\r\n" +
                           (_keepAlive ? "" : "Connection: close\r\n") +
                           "Content-Type: " + _contentTypeHeader + "\r\n" + 
+						  customHeader + "\r\n" +
                           "Content-Length: " + len + "\r\n" +
                           "\r\n" +
                           payload + 
@@ -396,9 +396,12 @@ bool HTTPSRedirect::POST(const String& url, const char* host, const String& payl
   return POST(url, host, payload, _printResponseBody);
 }
 
-bool HTTPSRedirect::POST(const String& url, const char* host, const String& payload, const bool& disp){
+
+
+bool HTTPSRedirect::POST(const String& url, const char* host,  const String& payload, const bool& disp){
   bool retval;
   bool oldval;
+ 
 
   // set _printResponseBody temporarily to argument passed
   oldval = _printResponseBody;
@@ -409,12 +412,41 @@ bool HTTPSRedirect::POST(const String& url, const char* host, const String& payl
   // which did not have redirection
   _redirHost = host;
   _redirUrl = url;
-  
   InitResponse();
   
   // Create request packet
+  //createPostRequest(url, host, payload);
   createPostRequest(url, host, payload);
+  // Call request handler
+  retval = printRedir();
 
+  _printResponseBody = oldval;
+  return retval;
+}
+
+bool HTTPSRedirect::POSTcustomHeader(const String& url, const char* host, const String& customHeader, const String& payload){
+  return POSTcustomHeader(url, host, customHeader, payload, _printResponseBody);
+}
+
+
+bool HTTPSRedirect::POSTcustomHeader(const String& url, const char* host, const String& customHeader, const String& payload, const bool& disp){
+  bool retval;
+  bool oldval;
+ 
+  // set _printResponseBody temporarily to argument passed
+  oldval = _printResponseBody;
+  _printResponseBody = disp;
+
+  // redirected Host and Url need to be initialized in case a 
+  // reConnectFinalEndpoint() request is made after an initial request 
+  // which did not have redirection
+  _redirHost = host;
+  _redirUrl = url;
+  InitResponse();
+  
+  // Create request packet
+  //createPostRequest(url, host, payload);
+  createPostRequestcustomHeader(url, host, customHeader, payload);
   // Call request handler
   retval = printRedir();
 
@@ -503,4 +535,3 @@ void HTTPSRedirect::printHeaderFields(void){
   DPRINTLN(_hF.contentType);
 }
 #endif
-
